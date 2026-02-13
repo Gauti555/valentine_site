@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f8b500 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float 10s infinite ease-in;
+            bottom: -100px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Initial question card */
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.8s ease-out;
+            border: 3px solid #fff;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h1 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji-big {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            box-shadow: 0 5px 20px rgba(196, 69, 105, 0.4);
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(196, 69, 105, 0.6);
+        }
+
+        .no-btn {
+            background: #ecf0f1;
+            color: #7f8c8d;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            background: #bdc3c7;
+        }
+
+        /* Success/Reveal Section */
+        .reveal-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid #fff;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .reveal-section h2 {
+            color: #e74c3c;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .reveal-section p {
+            color: #2c3e50;
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 5px;
+            font-weight: bold;
+            color: #d63031;
+        }
+
+        /* Floating balloons */
+        .balloons {
+            margin-top: 30px;
+            font-size: 3em;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .balloon {
+            animation: floatBalloon 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .balloon:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .balloon:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .balloon:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        .balloon:nth-child(5) {
+            animation-delay: 2s;
+        }
+
+        @keyframes floatBalloon {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 1s linear infinite;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .reveal-section h2 {
+                font-size: 1.6em;
+            }
+
+            .emoji-big {
+                font-size: 3em;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 5;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="container">
+        <!-- Question Section -->
+        <div class="question-card" id="questionCard">
+            <div class="emoji-big">💌</div>
+            <h1>Will You Be My Valentine?</h1>
+            <p style="color: #7f8c8d; margin-top: 10px; font-size: 1.1em;">I have a surprise for you... ✨</p>
+
+            <div class="buttons">
+                <button class="yes-btn" onclick="sayYes()">Yes! 💖</button>
+                <button class="no-btn" id="noBtn" onmouseover="moveButton()" onclick="sayNo()">No 💔</button>
+            </div>
+        </div>
+
+        <!-- Reveal Section -->
+        <div class="reveal-section" id="revealSection">
+            <div class="emoji-big">🥰</div>
+            <h2>I Knew You'd Say Yes!</h2>
+            <p>Let's meet at <span class="highlight" contenteditable="true">[Your Special Place]</span></p>
+            <p>on <span class="highlight" contenteditable="true">[Date & Time]</span></p>
+            <p style="margin-top: 20px; font-size: 1.1em; color: #e74c3c;">Can't wait to see you! 💕</p>
+
+            <div class="balloons">
+                <span class="balloon">🎈</span>
+                <span class="balloon">💖</span>
+                <span class="balloon">🎈</span>
+                <span class="balloon">💝</span>
+                <span class="balloon">🎈</span>
+            </div>
+
+            <p style="margin-top: 30px; font-size: 0.9em; color: #95a5a6;">
+                Screenshot this & send it to me! 📸
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartSymbols = ['💕', '💖', '💗', '💓', '💝', '♥️'];
+
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 10000);
+            }, 300);
+        }
+
+        // The "No" button runs away
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 200);
+            const y = Math.random() * (window.innerHeight - 100);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            btn.style.transition = 'all 0.3s ease';
+        }
+
+        function sayNo() {
+            moveButton();
+        }
+
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#c44569', '#f8b500', '#ffeaa7', '#fd79a8'];
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 50);
+            }
+        }
+
+        // Yes button action
+        function sayYes() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('revealSection').style.display = 'block';
+            createConfetti();
+
+            // Add extra celebration
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => createConfetti(), i * 200);
+            }
+        }
+
+        // Initialize
+        createHearts();
+
+        // Make it work on touch devices too
+        document.getElementById('noBtn').addEventListener('touchstart', moveButton);
+    </script>
+</body>
+
+</html>
